@@ -1,0 +1,8 @@
+[package]
+name = "performance_test"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+polars = { version = "0.38", features = ["lazy"] }
+rand = "0.8.5"
