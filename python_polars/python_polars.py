@@ -8,7 +8,7 @@ def custom_transform(x: float) -> float:
 
 def main():
     print("Generating data...")
-    num_runs = 20
+    num_runs = 100
     size = 10_000_000
     np.random.seed(42)  # for reproducibility
     df = pl.DataFrame({
@@ -24,9 +24,10 @@ def main():
     for i in range(num_runs):  # Run repeatedly to get a more stable measurement
         _ = (df
             .lazy()
-            .with_columns((pl.col('value1') + pl.col('value2')).alias('sum'))
+            .with_columns((pl.col('value1') + pl.col('value2')).alias('sum'))           
             .with_columns(pl.col('sum').mean().over('category').alias('category_mean'))
             .with_columns(((pl.col('sum') - pl.col('category_mean')) ** 2).alias('squared_diff'))
+            # .with_columns((pl.col('value1').map_elements(custom_transform, return_dtype=pl.Float64)).alias('sine')) 
             .group_by('category')
             .agg([
                 pl.col('squared_diff').mean().alias('variance'),

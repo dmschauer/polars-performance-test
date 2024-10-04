@@ -4,8 +4,8 @@ use std::time::Instant;
 
 fn main() -> Result<(), PolarsError> {
     println!("Generating data...");
-    let num_runs = 50;
-    let size = 10_000_000;
+    let num_runs = 100;
+    let size = 100_000_000;
     let mut rng = rand::thread_rng();
     let id: Vec<i32> = (0..size).collect();
     let value1: Vec<f64> = (0..size).map(|_| rng.gen_range(0.0..100.0)).collect();
@@ -39,7 +39,7 @@ fn main() -> Result<(), PolarsError> {
             .agg([
                 col("squared_diff").mean().alias("variance"),
                 col("sum").count().alias("count"),
-            ])
+            ]) 
             .sort("category", SortOptions::default())
             .collect()?;
         let duration = start.elapsed();
